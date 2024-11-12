@@ -13,6 +13,14 @@ const Statistic = ({ name, value }) => (
 );
 
 const Statistics = ({ stats }) => {
+  if (stats.total === 0) {
+    return (
+      <div>
+        <h1>statistics</h1>
+        <div>No feedback given</div>
+      </div>
+    );
+  }
   return (
     <div>
       <h1>statistics</h1>
@@ -39,6 +47,7 @@ const App = () => {
     good: good,
     neutral: neutral,
     bad: bad,
+    total: total,
     average: (good - bad) / total,
     positive: (good / total) * 100,
   };
