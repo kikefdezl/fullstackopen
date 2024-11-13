@@ -1,5 +1,30 @@
 import { useState } from "react";
 
+function indexOfMax(arr) {
+  if (arr.length === 0) {
+    return -1;
+  }
+
+  var max = arr[0];
+  var maxIndex = 0;
+
+  for (var i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+      maxIndex = i;
+      max = arr[i];
+    }
+  }
+
+  return maxIndex;
+}
+
+const Anecdote = ({ anecdote, votes }) => (
+  <div>
+    <div>{anecdote}</div>
+    <div>{"Has " + votes + " votes"}</div>
+  </div>
+);
+
 const Button = ({ text, handleClick }) => (
   <button onClick={handleClick}>{text}</button>
 );
@@ -18,6 +43,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+  const max_votes = indexOfMax(votes);
 
   const handleClickVote = () => {
     var new_votes = [...votes];
@@ -26,7 +52,7 @@ const App = () => {
   };
   const handleClickNext = () => {
     var next = Math.floor(Math.random() * anecdotes.length);
-    // ensure the next anecdote is different than the current
+    // ensure the next is different than the current
     while (next === selected) {
       next = Math.floor(Math.random() * anecdotes.length);
     }
@@ -35,12 +61,20 @@ const App = () => {
 
   return (
     <div>
-      <div>{anecdotes[selected]}</div>
-      <div>{"Has " + String(votes[selected]) + " votes"}</div>
+      <h1>Anecdote of the Day</h1>
+      <Anecdote
+        anecdote={anecdotes[selected]}
+        votes={String(votes[selected])}
+      />
       <div>
         <Button text="vote" handleClick={handleClickVote} />
         <Button text="next anecdote" handleClick={handleClickNext} />
       </div>
+      <h1>Anecdote with most votes</h1>
+      <Anecdote
+        anecdote={anecdotes[max_votes]}
+        votes={String(votes[max_votes])}
+      />
     </div>
   );
 };
